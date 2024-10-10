@@ -10,7 +10,7 @@
 	let newRule = {
 		title: '',
 		message: '',
-		frequency: 15,
+		frequency: 30,
 		days: [1, 1, 1, 1, 1, 1, 1],
 		startTime: '00:00',
 		endTime: '23:59',
@@ -18,10 +18,7 @@
 	// TODO: custom type for rule
 	let rule = newRule;
 
-	// TODO: don't need this here and in RuleForm component
 	onMount(async () => {
-		let storage = await browser.storage.local.get('reminders');
-
 		if (id === 'new') {
 			rule = newRule;
 		} else {
@@ -37,12 +34,16 @@
 
 	const updateRule = () => {
 		$remindersStore.push(rule);
-		browser.storage.local.set({ $remindersStore });
+		browser.storage.local.set({ reminders: $remindersStore });
 	};
 
 	const updateNewRuleDay = (day: number) => {
 		rule.days[day] = rule.days[day] === 0 ? 1 : 0;
 		rule = { ...rule };
+	};
+	const deleteRule = () => {
+		$remindersStore.splice(+id, 1);
+		browser.storage.local.set({ reminders: $remindersStore });
 	};
 </script>
 
@@ -73,14 +74,21 @@
 		<label for="endTime">End Time:</label>
 		<input class="" type="time" name="endTime" required bind:value={rule.endTime} />
 	</div>
-	<div class="grid place-content-center">
-		<button type="submit" class="text-green-900 bg-green-200 hover:bg-green-400 border-2 border-green-300 rounded-sm text-xl px-1">
-			{#if $addNewRuleStore}
-				Add
-			{:else}
-				Update
-			{/if}
-		</button>
+	<div class="grid" class:grid-cols-2={id !== 'new'}>
+		<div class="grid place-content-center" class:hidden={id === 'new'}>
+			<button type="button" on:click={deleteRule} class="text-red-900 bg-red-200 hover:bg-red-400 border-2 border-red-300 rounded-sm text-xl px-1 mt-2">
+				Delete
+			</button>
+		</div>
+		<div class="grid place-content-center">
+			<button type="submit" class="text-green-900 bg-green-200 hover:bg-green-400 border-2 border-green-300 rounded-sm text-xl px-1 mt-2">
+				{#if $addNewRuleStore || $remindersStore.length === 0}
+					Add
+				{:else}
+					Update
+				{/if}
+			</button>
+		</div>
 	</div>
 </form>
 

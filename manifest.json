@@ -4,7 +4,9 @@
 	"version": "1.0",
 	"description": "Set recurring notifications",
 	"permissions": [
-		"storage"
+		"storage",
+		"alarms",
+		"notifications"
 	],
 	"background": {
 		"scripts": [

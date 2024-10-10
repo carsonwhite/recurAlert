@@ -6,7 +6,6 @@
 
 	let showEdit: number = -1;
 
-	// TODO: don't need this here and in RuleForm component
 	onMount(async () => {
 		let storage = await browser.storage.local.get('reminders');
 
@@ -17,6 +16,8 @@
 			$remindersStore = storage.reminders;
 		}
 	});
+
+	$: $remindersStore, () => {};
 </script>
 
 <main class="font-mono m-2">
@@ -28,13 +29,19 @@
 	{#each $remindersStore as reminder, index}
 		<div class=" border-2 border-black rounded-sm mb-2">
 			<div class="grid grid-cols-8">
-				<div class="col-span-7 grid pl-2">
-					<h2 class="text-lg">{reminder.title}</h2>
-					<span class="flex indent-4">
-						<p class="truncate">{reminder.message}</p>
-						<p>{reminder.frequency}</p>
-					</span>
-				</div>
+				{#if !(showEdit === index)}
+					<div class="col-span-5 grid pl-2">
+						<h2 class="text-lg">{reminder.title}</h2>
+						<span class="flex indent-4">
+							<p>Every {reminder.frequency} minutes</p>
+						</span>
+					</div>
+					<div class="col-span-2 grid place-content-center">
+						<p class=" text-green-700">Active</p>
+					</div>
+				{:else}
+					<div class="col-span-7"></div>
+				{/if}
 				<div
 					class="text-2xl grid place-content-center hover:scale-110 hover:cursor-pointer"
 					class:rotate-180={showEdit === index}
