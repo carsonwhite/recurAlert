@@ -17,7 +17,29 @@
 		}
 	});
 
-	$: $remindersStore, () => {};
+	$: $remindersStore, updateAlarms();
+
+	const updateAlarms = async () => {
+		let currentAlarms = await browser.alarms.getAll();
+
+		console.log('Current Alarms: ', currentAlarms);
+		console.log('Reminders: ', $remindersStore);
+
+		for (let i = 0; i < $remindersStore.length; i++) {
+			let r = $remindersStore[i];
+
+			let alarm = `${i}-${r.title}-${r.message}`;
+			let alarmIndex = currentAlarms.findIndex((a) => a.name === alarm);
+
+			if (alarmIndex !== -1) {
+				console.log('Alarm Matched: ', r);
+				continue;
+			} else {
+				console.log('Alarm Not Matched: ', r);
+				browser.alarms.create(alarm, { periodInMinutes: r.frequency });
+			}
+		}
+	};
 </script>
 
 <main class="font-mono m-2">
