@@ -19,11 +19,7 @@
 	let rule = newRule;
 
 	onMount(async () => {
-		if (id === 'new') {
-			rule = newRule;
-		} else {
-			rule = $remindersStore[+id];
-		}
+		rule = id === 'new' ? newRule : $remindersStore[+id];
 	});
 
 	onDestroy(() => {
