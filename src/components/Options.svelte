@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import RuleForm from './RuleForm.svelte';
-	import { addNewRuleStore } from '../stores/controlsStore';
+	import { addNewRuleStore, showEditStore } from '../stores/controlsStore';
 	import { remindersStore } from '../stores/remindersStore';
 	import { isBetweeen } from '../lib/helpers';
-
-	let showEdit: number = -1;
 
 	onMount(async () => {
 		let storage = await browser.storage.local.get('reminders');
@@ -47,7 +45,7 @@
 	{#each $remindersStore as reminder, index}
 		<div class=" border-2 border-black rounded-sm mb-2">
 			<div class="grid grid-cols-8">
-				{#if !(showEdit === index)}
+				{#if !($showEditStore === index)}
 					<div class="col-span-5 grid pl-2">
 						<h2 class="text-lg">{reminder.title}</h2>
 						<span class="flex indent-4">
@@ -66,19 +64,19 @@
 				{/if}
 				<div
 					class="text-2xl grid place-content-center hover:scale-110 hover:cursor-pointer"
-					class:rotate-180={showEdit === index}
-					on:click={() => (showEdit = showEdit === index ? -1 : index)}>
+					class:rotate-180={$showEditStore === index}
+					on:click={() => ($showEditStore = $showEditStore === index ? -1 : index)}>
 					v
 				</div>
 			</div>
-			{#if showEdit === index}
+			{#if $showEditStore === index}
 				<div class="m-4">
 					<RuleForm id={index} />
 				</div>
 			{/if}
 		</div>
 	{/each}
-	{#if ($addNewRuleStore || $remindersStore.length === 0) && showEdit === -1}
+	{#if ($addNewRuleStore || $remindersStore.length === 0) && $showEditStore === -1}
 		<section class="grid place-content-center">
 			<RuleForm id="new" />
 		</section>
@@ -88,7 +86,7 @@
 				class="text-teal-900 bg-teal-200 hover:bg-teal-400 border-2 border-teal-300 rounded-sm text-xl px-1"
 				type="button"
 				on:click={() => {
-					showEdit = -1;
+					$showEditStore = -1;
 					$addNewRuleStore = true;
 				}}>New</button>
 		</div>

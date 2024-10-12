@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
-	import { addNewRuleStore } from '../stores/controlsStore';
+	import { addNewRuleStore, showEditStore } from '../stores/controlsStore';
 	import { remindersStore } from '../stores/remindersStore';
 
 	export let id: string | number = 'new';
@@ -29,8 +29,14 @@
 	});
 
 	const updateRule = () => {
-		$remindersStore.push(rule);
+		if (id === 'new') {
+			$remindersStore.push(rule);
+		} else {
+			$remindersStore[+id] = rule;
+		}
 		browser.storage.local.set({ reminders: $remindersStore });
+		$addNewRuleStore = false;
+		$showEditStore = -2;
 	};
 
 	const updateNewRuleDay = (day: number) => {
@@ -40,6 +46,7 @@
 	const deleteRule = () => {
 		$remindersStore.splice(+id, 1);
 		browser.storage.local.set({ reminders: $remindersStore });
+		$showEditStore = -1;
 	};
 </script>
 
