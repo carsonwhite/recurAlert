@@ -3,6 +3,7 @@
 	import RuleForm from './RuleForm.svelte';
 	import { addNewRuleStore } from '../stores/controlsStore';
 	import { remindersStore } from '../stores/remindersStore';
+	import { isBetweeen } from '../lib/helpers';
 
 	let showEdit: number = -1;
 
@@ -22,9 +23,6 @@
 	const updateAlarms = async () => {
 		let currentAlarms = await browser.alarms.getAll();
 
-		console.log('Current Alarms: ', currentAlarms);
-		console.log('Reminders: ', $remindersStore);
-
 		for (let i = 0; i < $remindersStore.length; i++) {
 			let r = $remindersStore[i];
 
@@ -32,10 +30,8 @@
 			let alarmIndex = currentAlarms.findIndex((a) => a.name === alarm);
 
 			if (alarmIndex !== -1) {
-				console.log('Alarm Matched: ', r);
 				continue;
 			} else {
-				console.log('Alarm Not Matched: ', r);
 				browser.alarms.create(alarm, { periodInMinutes: r.frequency });
 			}
 		}
@@ -59,7 +55,11 @@
 						</span>
 					</div>
 					<div class="col-span-2 grid place-content-center">
-						<p class=" text-green-700">Active</p>
+						{#if isBetweeen(reminder.startTime, reminder.endTime) && reminder.days[new Date().getDay()]}
+							<p class="text-green-700">Active</p>
+						{:else}
+							<p class="text-gray-500">Inactive</p>
+						{/if}
 					</div>
 				{:else}
 					<div class="col-span-7"></div>
