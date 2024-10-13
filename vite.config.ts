@@ -17,6 +17,10 @@ const plugins = [
 				dest: 'static'
 			},
 			{
+				src: 'static/icon_64.png',
+				dest: 'static'
+			},
+			{
 				src: 'static/icon_128.png',
 				dest: 'static'
 			},
