@@ -15,17 +15,6 @@
 		"type": "module",
 		"persistent": false
 	},
-	"content_scripts": [
-		{
-			"matches": [
-				"<all_urls>"
-			],
-			"js": [
-				"content/content.js"
-			],
-			"run_at": "document_end"
-		}
-	],
 	"browser_action": {
 		"default_popup": "src/popup/popup.html",
 		"default_icon": "static/icon_48.png"
