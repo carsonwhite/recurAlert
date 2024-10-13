@@ -17,10 +17,13 @@
 	},
 	"browser_action": {
 		"default_popup": "src/popup/popup.html",
-		"default_icon": "static/icon_48.png"
-	},
-	"web_accessible_resources": [
-		"background.js",
-		"index.html"
-	]
-}
+		"default_icon": {
+			"48": "icon_48.png",
+			"64": "icon_64.png",
+			"128": "icon_128.png"
+		},
+		"web_accessible_resources": [
+			"background.js",
+			"index.html"
+		]
+	}
