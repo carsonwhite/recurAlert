@@ -2,12 +2,13 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { addNewRuleStore, showEditStore } from '../stores/controlsStore';
 	import { remindersStore } from '../stores/remindersStore';
+	import type { Rule } from '../lib/types';
 
 	export let id: string | number = 'new';
 
-	let days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+	let days: string[] = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-	let newRule = {
+	let newRule: Rule = {
 		title: '',
 		message: '',
 		frequency: 30,
@@ -15,8 +16,7 @@
 		startTime: '00:00',
 		endTime: '23:59',
 	};
-	// TODO: custom type for rule
-	let rule = newRule;
+	let rule: Rule = newRule;
 
 	onMount(async () => {
 		rule = id === 'new' ? newRule : $remindersStore[+id];
