@@ -16,6 +16,7 @@
 		startTime: '00:00',
 		endTime: '23:59',
 	};
+
 	let rule: Rule = newRule;
 
 	onMount(async () => {
