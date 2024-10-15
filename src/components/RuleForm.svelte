@@ -67,7 +67,7 @@
 		<label for="days">Active Days:</label>
 		<div class="grid grid-cols-7 border-black border p-1" id="days">
 			{#each days as day, i}
-				<span class="day-select" on:click={() => updateNewRuleDay(i)} class:day-selected={rule.days[i] !== 0}>{day}</span>
+				<button type="button" class="day-select" on:click={() => updateNewRuleDay(i)} class:day-selected={rule.days[i] !== 0}>{day}</button>
 			{/each}
 		</div>
 	</div>

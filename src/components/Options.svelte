@@ -62,12 +62,13 @@
 				{:else}
 					<div class="col-span-7"></div>
 				{/if}
-				<div
+				<button
+					type="button"
 					class="text-2xl grid place-content-center hover:scale-110 hover:cursor-pointer"
 					class:rotate-180={$showEditStore === index}
 					on:click={() => ($showEditStore = $showEditStore === index ? -1 : index)}>
 					v
-				</div>
+				</button>
 			</div>
 			{#if $showEditStore === index}
 				<div class="m-4">
