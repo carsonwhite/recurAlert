@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "RecurAlert",
-	"version": "1.1",
+	"version": "1.1.1",
 	"description": "Set recurring notifications",
 	"permissions": [
 		"storage",
@@ -13,7 +13,7 @@
 			"background.js"
 		],
 		"type": "module",
-		"persistent": false
+		"persistent": true
 	},
 	"browser_action": {
 		"default_popup": "src/popup/popup.html",
